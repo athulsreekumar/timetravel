@@ -41,9 +41,7 @@ body{
 .info{
 	color: #3F3D56;
 }
-.or{
-	margin-left: 24%;
-}
+
 
 .clock{
 	margin-top: 30%;
@@ -156,4 +154,8 @@ body{
 }
 .logout:hover{
 	color:white;
+}
+.kpli
+{
+	margin-left:18%;font-weight: 400;
 }
