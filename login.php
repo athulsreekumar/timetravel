@@ -38,7 +38,7 @@
 							    <h1>Welcome to TimeTravel</h1>
 							    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam risus augue, efficitur eget euismod eget, convallis ac lorem. Aliquam elit arcu, aliquam eu ipsum sed, tincidunt auctor nisl. Proin pharetra ex vitae egestas faucibus. Morbi velit massa, egestas eu eros vitae, fringilla iaculis neque. Pellentesque et commodo risus.</p>
 						    </div>
-
+									
 					    </div>
 				    </div>
 				    <div class="col-lg-7">
@@ -66,14 +66,14 @@
                                 <?php include('errors.php') ?>
 						    </div>
 
-						    <a href="#" style="font-weight: bold;">Forgot Password?</a>
+						    <p style="font-weight: 500;"><input type="checkbox" name="kmli" style="margin-left:18%;"> Keep me Logged-In</p>
 
-                  		    <p>New To TimeTravel? <a href="registration.php" style="font-weight: bold;">Sign Up</a></p>
+                  		    <p style="padding-top:10px;padding-left:14.5%">New To TimeTravel? <a href="registration.php" style="font-weight: bold;">Sign Up</a></p>
 
-						    <p class="lead mx-5 px-5 mt-5" style="margin-left">Other Ways of Signing in</p>
+						    <p class="lead mt-5" style="padding-left:14.5%;">Other Ways of Signing in</p>
 						    <div class="form-row">	
 							    <div class="col-lg-7 mt-3">
-									<div class="g-signin2" data-onsuccess="onSignIn" style="margin-left: 35%;">
+									<div class="g-signin2" data-onsuccess="onSignIn" onclick="ifClicked()" data-theme="dark" data-width="250" style="padding-left: 20%;">
 							    </div>
 						    </div>
 					    </div>	
@@ -87,39 +87,36 @@
 		<!--Javascript for Google Sign in button-->
 
 		<script type="text/javascript">
+
+			var clicked=false;
+
+			function ifClicked(){
+				clicked = true;
+			}
+
 			function onSignIn(googleUser) {
 				var profile = googleUser.getBasicProfile();
+				if(clicked){
+					if(profile){
+						$.ajax({
+							type: 'POST',
+							url: 'googleLogin.php',
+							data: {id:profile.getId(), name:profile.getName(), email:profile.getEmail()}
+						})
+						.done(function(data){
+							console.log(data);
+							window.location.href = 'googleAuthentication.php';
+						})
+						.fail(function() { 
+							alert( "Posting failed." );
+						});
 
-
-				if(profile){
-					$.ajax({
-						type: 'POST',
-						url: 'googleLogin.php',
-						data: {id:profile.getId(), name:profile.getName(), email:profile.getEmail()}
-					})
-					.done(function(data){
-						console.log(data);
-						window.location.href = 'googleAuthentication.php';
-					})
-					.fail(function() { 
-						alert( "Posting failed." );
-					});
-
+					}
+			
 				}
-
-
+				
     		}
 		</script>
-
-
-
-		<script>
-			if ( window.history.replaceState ) {
-				window.history.replaceState( null, null, window.location.href );
-			}
-		</script>
-
-
 
 		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>

@@ -1,13 +1,15 @@
 <?php
 
-if(isset($_GET['logout'])){
+    if(isset($_GET['logout'])){
 
-    session_destroy();
-    unset($_SESSION['name']);
-    header("location: login.php");
-}
-
+        session_destroy();
+        unset($_SESSION['name']);
+        header("location: login.php");  
+       
+    }
 ?>
+
+
 
 
 <!doctype html>
@@ -39,8 +41,20 @@ if(isset($_GET['logout'])){
         <nav>
             <label class="logo">TimeTravel.com</label>
             <ul>
+                <li style="color:white;">
+
+                    <?php
+                    
+                    if(isset($_SESSION['email'])){
+                        echo $_SESSION['email'];
+                    }
+                    
+                    ?>
+
+
+                </li>
                 <li>
-                    <a href="index.php?logout='1'" class="logout">Logout</a>
+                    <a href="index.php?logout='1'" class="logout" name="logout" onclick="logout()">Logout</a>
                 </li>
             </ul>
             <label id="icon">
@@ -48,5 +62,9 @@ if(isset($_GET['logout'])){
                 </span>
             </label>
         </nav>
+
+
+    
+    
     </body>
 </html>  

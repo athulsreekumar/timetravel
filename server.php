@@ -2,6 +2,12 @@
 
 session_start();
 
+if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+    header("location: index.php");
+    exit;
+  }
+
+
 //Variable initialisation
 
 $name = "";
@@ -84,26 +90,41 @@ if(isset($_POST['loginBtn'])){
     }
 
     //email sanity check
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        array_push($errors,"Enter Valid email ID");
+    if(!empty($email)){
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            array_push($errors,"Enter Valid email ID");
+        }
     }
-
 
     if(count($errors) == 0){
         
         $password = md5($password);
 
-        $name_query = "SELECT FROM tt WHERE email='$email'";
         $query = "SELECT * FROM tt WHERE email='$email' AND password='$password' ";
         $result = mysqli_query($con,$query);
-        $name1 = mysqli_query($con, $name_query);
-        $name = $name1['name'];
+
+
+        
+        $name_query = "SELECT * FROM tt";
+
+        
+        $ar_name = mysqli_query($con, $name_query);
+
+        
+        while($row = mysqli_fetch_array($ar_name)) {
+
+            $name=$row['name'];
+        }
+
 
         if(mysqli_num_rows($result)){
 
             $_SESSION['name'] = $name;
             $_SESSION['success'] = "";
+            $_SESSION['email'] = $email;
+            if(isset($_POST['kmli'])){
+                $_SESSION["loggedin"] = true;
+            }
             header("location: index.php"); //If email and password provided matches with the database records the user is redirected to the homepage
         }
         else{
